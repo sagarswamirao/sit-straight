@@ -3,6 +3,8 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var reminderManager: ReminderManager
     @State private var showingQuitAlert = false
+    @State private var isStartButtonHovered = false
+    @State private var isQuitButtonHovered = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -46,10 +48,15 @@ struct SettingsView: View {
                         Text(reminderManager.isRunning ? "Stop Reminders" : "Start Reminders")
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 12)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .scaleEffect(isStartButtonHovered ? 1.05 : 1.0)
+                .animation(.easeInOut(duration: 0.2), value: isStartButtonHovered)
+                .onHover { hovering in
+                    isStartButtonHovered = hovering
+                }
 
                 Button(action: {
                     showingQuitAlert = true
@@ -59,16 +66,21 @@ struct SettingsView: View {
                         Text("Quit App")
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 12)
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.large)
+                .scaleEffect(isQuitButtonHovered ? 1.05 : 1.0)
+                .animation(.easeInOut(duration: 0.2), value: isQuitButtonHovered)
+                .onHover { hovering in
+                    isQuitButtonHovered = hovering
+                }
             }
 
             Spacer()
         }
         .padding(20)
-        .frame(width: 300, height: 200)
+        .frame(width: 350, height: 250)
         .alert("Quit Sit Straight?", isPresented: $showingQuitAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Quit", role: .destructive) {

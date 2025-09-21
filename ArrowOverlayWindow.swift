@@ -41,15 +41,18 @@ class ArrowOverlayWindow: NSWindow {
     }
 
     func showOverlay() {
+        print("🎬 Showing overlay window...")
         // Show the window
         makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
 
         // Start the animation
         overlayView?.startAnimation()
+        print("✅ Animation started")
 
         // Auto-hide after 5 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            print("🔄 Auto-hiding overlay window")
             self.hideOverlay()
         }
     }

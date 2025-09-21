@@ -47,19 +47,25 @@ class ReminderManager: ObservableObject {
 
     private func showReminder() {
         print("🔔 Showing reminder...")
-        // Play reminder sound
-        audioManager.playReminderSound()
+        
+        do {
+            // Play reminder sound
+            audioManager.playReminderSound()
 
-        // Create and show the overlay window
-        overlayWindow = ArrowOverlayWindow()
-        overlayWindow?.showOverlay()
+            // Create and show the overlay window
+            overlayWindow = ArrowOverlayWindow()
+            overlayWindow?.showOverlay()
+            print("✅ Overlay window shown")
 
-        // Schedule next reminder if still running
-        if isRunning {
-            print("⏰ Scheduling next reminder in \(intervalMinutes) minutes")
-            scheduleNextReminder()
-        } else {
-            print("❌ Timer is not running, not scheduling next reminder")
+            // Schedule next reminder if still running
+            if isRunning {
+                print("⏰ Scheduling next reminder in \(intervalMinutes) minutes")
+                scheduleNextReminder()
+            } else {
+                print("❌ Timer is not running, not scheduling next reminder")
+            }
+        } catch {
+            print("❌ Error showing reminder: \(error)")
         }
     }
 }

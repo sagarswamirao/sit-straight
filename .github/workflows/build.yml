@@ -30,21 +30,21 @@ jobs:
         mkdir -p dist
         # Copy arm64 app as base
         cp -R DerivedData-arm64/Build/Products/Release/SitStraight.app dist/SitStraight.app
-        
+
         # Create universal binary for the main executable
         lipo -create \
           DerivedData-arm64/Build/Products/Release/SitStraight.app/Contents/MacOS/SitStraight \
           DerivedData-x86_64/Build/Products/Release/SitStraight.app/Contents/MacOS/SitStraight \
           -output dist/SitStraight.app/Contents/MacOS/SitStraight
-        
+
         # Remove quarantine attribute to avoid security warnings
         echo "🔓 Removing quarantine attribute..."
         xattr -d com.apple.quarantine dist/SitStraight.app 2>/dev/null || true
-        
+
         # Verify the universal binary
         echo "Universal binary info:"
         lipo -info dist/SitStraight.app/Contents/MacOS/SitStraight
-        
+
         # Create installation instructions
         echo "📱 Installation Instructions:"
         echo "1. Download the SitStraight.app artifact"
