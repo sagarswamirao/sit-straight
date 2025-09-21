@@ -8,6 +8,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var reminderManager: ReminderManager?
 
         func applicationDidFinishLaunching(_ notification: Notification) {
+            print("🚀 AppDelegate: applicationDidFinishLaunching called")
+            
             // Hide the app from the dock
             NSApp.setActivationPolicy(.accessory)
 
@@ -22,6 +24,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             // Register for auto-start
             registerForAutoStart()
+            
+            print("✅ AppDelegate: initialization complete")
         }
 
     private func setupMenuBar() {
@@ -58,10 +62,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if reminderManager.isPaused {
                 button.title = "⏸️ \(minutes):\(String(format: "%02d", seconds))"
             } else {
-                button.title = "⏰ \(minutes):\(String(format: "%02d", seconds))"
+                button.title = "🧘 \(minutes):\(String(format: "%02d", seconds))"
             }
         } else {
-            button.title = "🚀"
+            button.title = "🧘"
         }
     }
 
@@ -108,6 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        print("🚨 AppDelegate: applicationWillTerminate called")
         reminderManager?.stopTimer()
     }
 }

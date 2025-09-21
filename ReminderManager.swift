@@ -20,7 +20,10 @@ class ReminderManager: ObservableObject {
     private var startTime: Date?
 
     func startTimer() {
-        guard !isRunning else { return }
+        guard !isRunning else { 
+            print("⚠️ Timer already running, ignoring start request")
+            return 
+        }
         print("🚀 Starting timer with \(intervalMinutes) minute intervals")
         isRunning = true
         isPaused = false
@@ -61,6 +64,7 @@ class ReminderManager: ObservableObject {
             self?.overlayWindow?.close()
             self?.overlayWindow = nil
         }
+        print("✅ Timer stopped and cleaned up")
     }
 
     deinit {
@@ -82,12 +86,22 @@ class ReminderManager: ObservableObject {
     }
 
     private func scheduleNextReminder() {
-        guard isRunning && !isPaused else { return }
+        guard isRunning && !isPaused else { 
+            print("❌ Not scheduling next reminder - isRunning: \(isRunning), isPaused: \(isPaused)")
+            return 
+        }
 
+        // Invalidate existing timer
         timer?.invalidate()
+        timer = nil
+        
+        // Create new timer
         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(intervalMinutes * 60), repeats: false) { [weak self] _ in
+            print("⏰ Timer fired - showing reminder")
             self?.showReminder()
         }
+        
+        print("✅ Next reminder scheduled in \(intervalMinutes) minutes")
     }
 
     private func restartTimer() {
@@ -112,11 +126,12 @@ class ReminderManager: ObservableObject {
             self.audioManager.playReminderSound()
 
             // Create and show the overlay window with delay to ensure cleanup
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                guard let self = self else { return }
                 self.overlayWindow = ArrowOverlayWindow()
                 self.overlayWindow?.showOverlay()
+                print("✅ Overlay window shown")
             }
-            print("✅ Overlay window shown")
 
             // Schedule next reminder if still running
             if self.isRunning {
