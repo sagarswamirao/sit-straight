@@ -11,11 +11,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Hide the app from the dock
         NSApp.setActivationPolicy(.accessory)
 
+        // Initialize reminder manager first
+        reminderManager = ReminderManager()
+
         // Setup menu bar
         setupMenuBar()
-
-        // Initialize reminder manager
-        reminderManager = ReminderManager()
 
         // Register for auto-start
         registerForAutoStart()
