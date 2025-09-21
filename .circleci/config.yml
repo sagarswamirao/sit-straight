@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  build:
+    macos:
+      xcode: "15.0.0"
+    steps:
+      - checkout
+      - run:
+          name: Build the app
+          command: |
+            xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release build -derivedDataPath ./DerivedData
+      - run:
+          name: Package app
+          command: |
+            mkdir -p dist
+            cp -R DerivedData/Build/Products/Release/SitStraight.app dist/
+      - store_artifacts:
+          path: dist/SitStraight.app
+          destination: SitStraight.app
+
+workflows:
+  build:
+    jobs:
+      - build

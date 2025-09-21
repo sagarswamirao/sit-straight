@@ -1,0 +1,20 @@
+stages:
+  - build
+
+build_macos:
+  stage: build
+  image: macos:latest
+  before_script:
+    - xcode-select --install || true
+    - xcodebuild -version
+  script:
+    - xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release build -derivedDataPath ./DerivedData
+    - mkdir -p dist
+    - cp -R DerivedData/Build/Products/Release/SitStraight.app dist/
+  artifacts:
+    paths:
+      - dist/SitStraight.app
+    expire_in: 30 days
+  only:
+    - main
+    - master
