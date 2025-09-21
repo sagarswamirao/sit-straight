@@ -31,12 +31,12 @@ class ArrowOverlayWindow: NSWindow {
         hasShadow = false
         ignoresMouseEvents = false
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary, .transient]
-        
+
         // Ensure it appears on all spaces and fullscreen apps
         if #available(macOS 10.11, *) {
             collectionBehavior.insert(.fullScreenAuxiliary)
         }
-        
+
         // Set to cover the entire screen
         if let screen = NSScreen.main {
             setFrame(screen.frame, display: true)
@@ -52,7 +52,7 @@ class ArrowOverlayWindow: NSWindow {
 
     func showOverlay() {
         print("🎬 Showing overlay window...")
-        
+
         // Ensure we're on the main thread
         guard Thread.isMainThread else {
             DispatchQueue.main.async { [weak self] in
@@ -60,13 +60,7 @@ class ArrowOverlayWindow: NSWindow {
             }
             return
         }
-        
-        // Check if window is still valid
-        guard !isReleased else {
-            print("❌ Window is released, cannot show overlay")
-            return
-        }
-        
+
         // Show the window safely
         orderFront(nil)
         makeKey()

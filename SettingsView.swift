@@ -78,7 +78,7 @@ struct SettingsView: View {
                 .onHover { hovering in
                     isStartButtonHovered = hovering
                 }
-                
+
                 // Pause/Resume Button (only show when running)
                 if reminderManager.isRunning {
                     Button(action: {

@@ -101,7 +101,7 @@ struct ArrowOverlayView: View {
                 opacity = 0.8
                 rotationAngle = 0.0
             }
-            
+
             // Main rise animation with smooth easing
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 withAnimation(.easeInOut(duration: 2.5)) {

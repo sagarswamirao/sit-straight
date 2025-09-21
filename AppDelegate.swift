@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // Set up button with countdown timer
             updateMenuBarButton()
             button.action = #selector(togglePopover)
-            
+
             // Start timer to update menu bar every second
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateMenuBarButton()
@@ -49,11 +49,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func updateMenuBarButton() {
         guard let button = statusItem?.button else { return }
-        
+
         let timeRemaining = reminderManager?.timeRemaining ?? 0
         let minutes = timeRemaining / 60
         let seconds = timeRemaining % 60
-        
+
         if let reminderManager = reminderManager, reminderManager.isRunning {
             if reminderManager.isPaused {
                 button.title = "⏸️ \(minutes):\(String(format: "%02d", seconds))"

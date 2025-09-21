@@ -72,7 +72,7 @@ class ReminderManager: ObservableObject {
         countdownTimer?.invalidate()
         countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self, self.isRunning && !self.isPaused else { return }
-            
+
             if self.timeRemaining > 0 {
                 self.timeRemaining -= 1
             } else {
