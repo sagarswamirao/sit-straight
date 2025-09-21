@@ -22,12 +22,24 @@ jobs:
 
     - name: Build the app
       run: |
-        xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release -arch arm64 -arch x86_64 -destination "platform=macOS" build -derivedDataPath ./DerivedData
+        xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release -destination "platform=macOS,arch=arm64" build -derivedDataPath ./DerivedData-arm64
+        xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release -destination "platform=macOS,arch=x86_64" build -derivedDataPath ./DerivedData-x86_64
 
-    - name: Create app bundle
+    - name: Create universal app bundle
       run: |
         mkdir -p dist
-        cp -R DerivedData/Build/Products/Release/SitStraight.app dist/
+        # Copy arm64 app as base
+        cp -R DerivedData-arm64/Build/Products/Release/SitStraight.app dist/SitStraight.app
+        
+        # Create universal binary for the main executable
+        lipo -create \
+          DerivedData-arm64/Build/Products/Release/SitStraight.app/Contents/MacOS/SitStraight \
+          DerivedData-x86_64/Build/Products/Release/SitStraight.app/Contents/MacOS/SitStraight \
+          -output dist/SitStraight.app/Contents/MacOS/SitStraight
+        
+        # Verify the universal binary
+        echo "Universal binary info:"
+        lipo -info dist/SitStraight.app/Contents/MacOS/SitStraight
 
     - name: Upload built app
       uses: actions/upload-artifact@v4
