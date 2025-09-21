@@ -17,12 +17,13 @@ class ReminderManager: ObservableObject {
 
     func startTimer() {
         guard !isRunning else { return }
-
+        print("🚀 Starting timer with \(intervalMinutes) minute intervals")
         isRunning = true
         scheduleNextReminder()
     }
 
     func stopTimer() {
+        print("🛑 Stopping timer")
         isRunning = false
         timer?.invalidate()
         timer = nil
@@ -45,6 +46,7 @@ class ReminderManager: ObservableObject {
     }
 
     private func showReminder() {
+        print("🔔 Showing reminder...")
         // Play reminder sound
         audioManager.playReminderSound()
 
@@ -54,7 +56,10 @@ class ReminderManager: ObservableObject {
 
         // Schedule next reminder if still running
         if isRunning {
+            print("⏰ Scheduling next reminder in \(intervalMinutes) minutes")
             scheduleNextReminder()
+        } else {
+            print("❌ Timer is not running, not scheduling next reminder")
         }
     }
 }
