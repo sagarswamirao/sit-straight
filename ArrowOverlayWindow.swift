@@ -52,7 +52,7 @@ class ArrowOverlayWindow: NSWindow {
 
     func showOverlay() {
         print("🎬 Showing overlay window...")
-
+        
         // Ensure we're on the main thread
         guard Thread.isMainThread else {
             DispatchQueue.main.async { [weak self] in
@@ -63,7 +63,6 @@ class ArrowOverlayWindow: NSWindow {
 
         // Show the window safely
         orderFront(nil)
-        makeKey()
         NSApp.activate(ignoringOtherApps: true)
 
         // Start the animation

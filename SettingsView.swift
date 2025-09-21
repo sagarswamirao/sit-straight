@@ -4,47 +4,46 @@ struct SettingsView: View {
     @ObservedObject var reminderManager: ReminderManager
     @State private var showingQuitAlert = false
     @State private var isStartButtonHovered = false
+    @State private var isPauseButtonHovered = false
     @State private var isQuitButtonHovered = false
+    @State private var showingTimePicker = false
 
     var body: some View {
         VStack(spacing: 20) {
             // Header with gradient background
             VStack(spacing: 8) {
-                Image(systemName: "arrow.up.circle.fill")
+                Image(systemName: "figure.seated.side")
                     .font(.system(size: 32))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.blue, .purple, .pink],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundColor(.primary)
 
                 Text("Sit Straight")
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.blue, .purple],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .foregroundColor(.primary)
             }
             .padding(.top, 16)
 
-            // Interval Settings
-            VStack(alignment: .leading, spacing: 12) {
+            // Interval Settings - Same line layout
+            HStack(spacing: 16) {
                 Text("Reminder Interval")
                     .font(.headline)
+                    .frame(width: 120, alignment: .leading)
 
-                HStack {
-                    Stepper(value: $reminderManager.intervalMinutes, in: 1...120, step: 1) {
-                        Text("\(reminderManager.intervalMinutes) minutes")
+                Button(action: {
+                    showingTimePicker = true
+                }) {
+                    HStack {
+                        Text("\(reminderManager.intervalMinutes) min")
                             .font(.body)
+                        Image(systemName: "chevron.down")
+                            .font(.caption)
                     }
-                    .frame(width: 200)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color(.controlBackgroundColor))
+                    .cornerRadius(6)
                 }
+                .buttonStyle(.plain)
             }
 
             // Control Buttons
@@ -66,13 +65,7 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-                .background(
-                    LinearGradient(
-                        colors: reminderManager.isRunning ? [.red, .orange] : [.green, .mint],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .tint(reminderManager.isRunning ? .red : .green)
                 .scaleEffect(isStartButtonHovered ? 1.05 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isStartButtonHovered)
                 .onHover { hovering in
@@ -97,17 +90,11 @@ struct SettingsView: View {
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.large)
-                    .background(
-                        LinearGradient(
-                            colors: reminderManager.isPaused ? [.green, .mint] : [.orange, .yellow],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .scaleEffect(isStartButtonHovered ? 1.05 : 1.0)
-                    .animation(.easeInOut(duration: 0.2), value: isStartButtonHovered)
+                    .tint(reminderManager.isPaused ? .green : .orange)
+                    .scaleEffect(isPauseButtonHovered ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 0.2), value: isPauseButtonHovered)
                     .onHover { hovering in
-                        isStartButtonHovered = hovering
+                        isPauseButtonHovered = hovering
                     }
                 }
 
@@ -123,13 +110,7 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.large)
-                .background(
-                    LinearGradient(
-                        colors: [.red, .pink],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .tint(.red)
                 .scaleEffect(isQuitButtonHovered ? 1.05 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isQuitButtonHovered)
                 .onHover { hovering in
@@ -140,7 +121,7 @@ struct SettingsView: View {
             Spacer()
         }
         .padding(20)
-        .frame(width: 350, height: 250)
+        .frame(width: 350, height: 320)
         .alert("Quit Sit Straight?", isPresented: $showingQuitAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Quit", role: .destructive) {
@@ -148,6 +129,37 @@ struct SettingsView: View {
             }
         } message: {
             Text("Are you sure you want to quit the app?")
+        }
+        .sheet(isPresented: $showingTimePicker) {
+            VStack(spacing: 20) {
+                Text("Select Reminder Interval")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .padding(.top, 20)
+                
+                Picker("Minutes", selection: $reminderManager.intervalMinutes) {
+                    ForEach(1...60, id: \.self) { minute in
+                        Text("\(minute) min")
+                            .tag(minute)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(height: 150)
+                
+                HStack(spacing: 16) {
+                    Button("Cancel") {
+                        showingTimePicker = false
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button("Done") {
+                        showingTimePicker = false
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .padding(.bottom, 20)
+            }
+            .frame(width: 300, height: 300)
         }
     }
 }

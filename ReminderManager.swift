@@ -111,9 +111,11 @@ class ReminderManager: ObservableObject {
             // Play reminder sound
             self.audioManager.playReminderSound()
 
-            // Create and show the overlay window
-            self.overlayWindow = ArrowOverlayWindow()
-            self.overlayWindow?.showOverlay()
+            // Create and show the overlay window with delay to ensure cleanup
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.overlayWindow = ArrowOverlayWindow()
+                self.overlayWindow?.showOverlay()
+            }
             print("✅ Overlay window shown")
 
             // Schedule next reminder if still running
