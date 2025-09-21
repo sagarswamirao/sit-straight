@@ -19,7 +19,7 @@ struct ArrowOverlayView: View {
             // Arrow animation with LookAway-style effects
             VStack {
                 Spacer()
-                
+
                 ZStack {
                     // Pulsing background circle
                     Circle()
@@ -33,25 +33,40 @@ struct ArrowOverlayView: View {
                         )
                         .scaleEffect(pulseScale)
                         .opacity(opacity * 0.6)
-                    
+
                     // Main arrow with enhanced styling
-                    Image(systemName: "arrow.up.circle.fill")
-                        .font(.system(size: 120, weight: .bold))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .cyan, .mint, .blue],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .scaleEffect(scale)
-                        .rotationEffect(.degrees(rotationAngle))
-                        .shadow(color: .blue.opacity(0.8), radius: 30, x: 0, y: 0)
-                        .shadow(color: .cyan.opacity(0.6), radius: 15, x: 0, y: 0)
+                    ZStack {
+                        // Custom arrow image
+                        if let image = NSImage(named: "arrow-up") {
+                            Image(nsImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 120, height: 120)
+                                .scaleEffect(scale)
+                                .rotationEffect(.degrees(rotationAngle))
+                                .shadow(color: .blue.opacity(0.8), radius: 30, x: 0, y: 0)
+                                .shadow(color: .cyan.opacity(0.6), radius: 15, x: 0, y: 0)
+                        } else {
+                            // Fallback to SF Symbol
+                            Image(systemName: "arrow.up.circle.fill")
+                                .font(.system(size: 120, weight: .bold))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.blue, .cyan, .mint, .blue],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .scaleEffect(scale)
+                                .rotationEffect(.degrees(rotationAngle))
+                                .shadow(color: .blue.opacity(0.8), radius: 30, x: 0, y: 0)
+                                .shadow(color: .cyan.opacity(0.6), radius: 15, x: 0, y: 0)
+                        }
+                    }
                 }
                 .offset(y: offsetY)
                 .opacity(opacity)
-                
+
                 Spacer()
             }
         }
@@ -68,15 +83,15 @@ struct ArrowOverlayView: View {
         backgroundOpacity = 0.0
         rotationAngle = 0.0
         pulseScale = 1.0
-        
+
         // Play blink sound at start
         audioManager.playBlinkSound()
-        
+
         // Animate background fade in
         withAnimation(.easeOut(duration: 0.5)) {
             backgroundOpacity = 1.0
         }
-        
+
         // Animate arrow with delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             // Main rise animation
@@ -86,17 +101,17 @@ struct ArrowOverlayView: View {
                 opacity = 1.0
                 rotationAngle = 5.0
             }
-            
+
             // Pulsing effect during animation
             withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
                 pulseScale = 1.3
             }
-            
+
             // Play break reminder sound mid-animation
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 audioManager.playBreakReminderSound()
             }
-            
+
             // Fade out in the last second
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 withAnimation(.easeIn(duration: 1.5)) {
@@ -107,7 +122,7 @@ struct ArrowOverlayView: View {
                 }
             }
         }
-        
+
         // Fade out background at the end
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             withAnimation(.easeIn(duration: 1.0)) {

@@ -10,7 +10,7 @@ class ReminderManager: ObservableObject {
             }
         }
     }
-    
+
     private var timer: Timer?
     private var overlayWindow: ArrowOverlayWindow?
     private let audioManager = AudioManager()
@@ -47,11 +47,11 @@ class ReminderManager: ObservableObject {
     private func showReminder() {
         // Play reminder sound
         audioManager.playReminderSound()
-        
+
         // Create and show the overlay window
         overlayWindow = ArrowOverlayWindow()
         overlayWindow?.showOverlay()
-        
+
         // Schedule next reminder if still running
         if isRunning {
             scheduleNextReminder()

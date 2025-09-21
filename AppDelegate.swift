@@ -25,7 +25,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "arrow.up.circle.fill", accessibilityDescription: "Sit Straight")
+            // Try to use custom arrow image, fallback to SF Symbol
+            if let customImage = NSImage(named: "menubar-arrow") {
+                button.image = customImage
+            } else {
+                button.image = NSImage(systemSymbolName: "arrow.up.circle.fill", accessibilityDescription: "Sit Straight")
+            }
             button.action = #selector(togglePopover)
         }
 

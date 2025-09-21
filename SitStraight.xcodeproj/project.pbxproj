@@ -19,6 +19,8 @@
 		A1234567890ABCDEF1234579 /* reminder-posture-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234578 /* reminder-posture-1.wav */; };
 		A1234567890ABCDEF123457A /* reminder-blink-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234579 /* reminder-blink-1.wav */; };
 		A1234567890ABCDEF123457B /* notification-break-reminder.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123457A /* notification-break-reminder.wav */; };
+		A1234567890ABCDEF123457C /* arrow-up.svg in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123457B /* arrow-up.svg */; };
+		A1234567890ABCDEF123457D /* menubar-arrow.svg in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123457C /* menubar-arrow.svg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		A1234567890ABCDEF1234579 /* reminder-posture-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "reminder-posture-1.wav"; sourceTree = "<group>"; };
 		A1234567890ABCDEF123457A /* reminder-blink-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "reminder-blink-1.wav"; sourceTree = "<group>"; };
 		A1234567890ABCDEF123457B /* notification-break-reminder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "notification-break-reminder.wav"; sourceTree = "<group>"; };
+		A1234567890ABCDEF123457C /* arrow-up.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "arrow-up.svg"; sourceTree = "<group>"; };
+		A1234567890ABCDEF123457D /* menubar-arrow.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "menubar-arrow.svg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 				A1234567890ABCDEF1234579 /* reminder-posture-1.wav */,
 				A1234567890ABCDEF123457A /* reminder-blink-1.wav */,
 				A1234567890ABCDEF123457B /* notification-break-reminder.wav */,
+				A1234567890ABCDEF123457C /* arrow-up.svg */,
+				A1234567890ABCDEF123457D /* menubar-arrow.svg */,
 				A1234567890ABCDEF1234574 /* Preview Content */,
 			);
 			path = SitStraight;
@@ -156,6 +162,8 @@
 				A1234567890ABCDEF1234579 /* reminder-posture-1.wav in Resources */,
 				A1234567890ABCDEF123457A /* reminder-blink-1.wav in Resources */,
 				A1234567890ABCDEF123457B /* notification-break-reminder.wav in Resources */,
+				A1234567890ABCDEF123457C /* arrow-up.svg in Resources */,
+				A1234567890ABCDEF123457D /* menubar-arrow.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
