@@ -22,7 +22,7 @@ jobs:
 
     - name: Build the app
       run: |
-        xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release -arch arm64 -arch x86_64 build -derivedDataPath ./DerivedData
+        xcodebuild -project SitStraight.xcodeproj -scheme SitStraight -configuration Release -arch arm64 -arch x86_64 -destination "platform=macOS" build -derivedDataPath ./DerivedData
 
     - name: Create app bundle
       run: |
