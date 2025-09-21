@@ -136,22 +136,22 @@ struct SettingsView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top, 20)
-                
+
                 Picker("Minutes", selection: $reminderManager.intervalMinutes) {
                     ForEach(1...60, id: \.self) { minute in
                         Text("\(minute) min")
                             .tag(minute)
                     }
                 }
-                .pickerStyle(.wheel)
-                .frame(height: 150)
-                
+                .pickerStyle(.menu)
+                .frame(height: 50)
+
                 HStack(spacing: 16) {
                     Button("Cancel") {
                         showingTimePicker = false
                     }
                     .buttonStyle(.bordered)
-                    
+
                     Button("Done") {
                         showingTimePicker = false
                     }
