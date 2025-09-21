@@ -21,10 +21,10 @@ class ReminderManager: ObservableObject {
 
     func startTimer() {
         guard !isRunning else { 
-            print("⚠️ Timer already running, ignoring start request")
+            Logger.shared.log("⚠️ Timer already running, ignoring start request", level: .warning)
             return 
         }
-        print("🚀 Starting timer with \(intervalMinutes) minute intervals")
+        Logger.shared.log("🚀 Starting timer with \(intervalMinutes) minute intervals", level: .info)
         isRunning = true
         isPaused = false
         startTime = Date()
@@ -35,7 +35,7 @@ class ReminderManager: ObservableObject {
 
     func pauseTimer() {
         guard isRunning && !isPaused else { return }
-        print("⏸️ Pausing timer")
+        Logger.shared.log("⏸️ Pausing timer", level: .info)
         isPaused = true
         timer?.invalidate()
         countdownTimer?.invalidate()
@@ -43,14 +43,14 @@ class ReminderManager: ObservableObject {
 
     func resumeTimer() {
         guard isRunning && isPaused else { return }
-        print("▶️ Resuming timer")
+        Logger.shared.log("▶️ Resuming timer", level: .info)
         isPaused = false
         startCountdownTimer()
         scheduleNextReminder()
     }
 
     func stopTimer() {
-        print("🛑 Stopping timer")
+        Logger.shared.log("🛑 Stopping timer", level: .info)
         isRunning = false
         isPaused = false
         timer?.invalidate()
@@ -64,11 +64,11 @@ class ReminderManager: ObservableObject {
             self?.overlayWindow?.close()
             self?.overlayWindow = nil
         }
-        print("✅ Timer stopped and cleaned up")
+        Logger.shared.log("✅ Timer stopped and cleaned up", level: .info)
     }
 
     deinit {
-        print("🗑️ ReminderManager deallocated")
+        Logger.shared.log("🗑️ ReminderManager deallocated", level: .debug)
         stopTimer()
     }
 
@@ -87,21 +87,32 @@ class ReminderManager: ObservableObject {
 
     private func scheduleNextReminder() {
         guard isRunning && !isPaused else { 
-            print("❌ Not scheduling next reminder - isRunning: \(isRunning), isPaused: \(isPaused)")
+            Logger.shared.log("❌ Not scheduling next reminder - isRunning: \(isRunning), isPaused: \(isPaused)", level: .warning)
             return 
         }
 
         // Invalidate existing timer
-        timer?.invalidate()
+        if timer != nil {
+            Logger.shared.log("🔄 Invalidating existing timer", level: .debug)
+            timer?.invalidate()
+        }
         timer = nil
         
         // Create new timer
-        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(intervalMinutes * 60), repeats: false) { [weak self] _ in
-            print("⏰ Timer fired - showing reminder")
+        let interval = TimeInterval(intervalMinutes * 60)
+        Logger.shared.log("⏰ Creating new timer with interval: \(interval) seconds (\(intervalMinutes) minutes)", level: .debug)
+        
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
+            Logger.shared.log("⏰ Timer fired - showing reminder", level: .info)
             self?.showReminder()
         }
         
-        print("✅ Next reminder scheduled in \(intervalMinutes) minutes")
+        // Verify timer was created successfully
+        if timer != nil {
+            Logger.shared.log("✅ Next reminder scheduled in \(intervalMinutes) minutes", level: .info)
+        } else {
+            Logger.shared.log("❌ Failed to create timer!", level: .error)
+        }
     }
 
     private func restartTimer() {
@@ -112,35 +123,46 @@ class ReminderManager: ObservableObject {
     }
 
     private func showReminder() {
-        print("🔔 Showing reminder...")
+        Logger.shared.log("🔔 Showing reminder...", level: .info)
 
         // Ensure all UI operations happen on main thread
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else { 
+                Logger.shared.log("❌ Self is nil in showReminder callback", level: .error)
+                return 
+            }
 
+            Logger.shared.log("🧹 Cleaning up existing overlay window", level: .debug)
             // Close any existing overlay first
             self.overlayWindow?.close()
             self.overlayWindow = nil
 
+            Logger.shared.log("🔊 Playing reminder sound", level: .debug)
             // Play reminder sound
             self.audioManager.playReminderSound()
 
             // Create and show the overlay window with delay to ensure cleanup
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                guard let self = self else { return }
+                guard let self = self else { 
+                    Logger.shared.log("❌ Self is nil in overlay creation callback", level: .error)
+                    return 
+                }
+                
+                Logger.shared.log("🎬 Creating new overlay window", level: .debug)
                 self.overlayWindow = ArrowOverlayWindow()
                 self.overlayWindow?.showOverlay()
-                print("✅ Overlay window shown")
+                Logger.shared.log("✅ Overlay window shown", level: .info)
             }
 
             // Schedule next reminder if still running
+            Logger.shared.log("🔄 Checking if timer should continue - isRunning: \(self.isRunning)", level: .debug)
             if self.isRunning {
-                print("⏰ Scheduling next reminder in \(self.intervalMinutes) minutes")
+                Logger.shared.log("⏰ Scheduling next reminder in \(self.intervalMinutes) minutes", level: .info)
                 self.timeRemaining = self.intervalMinutes * 60
                 self.startCountdownTimer()
                 self.scheduleNextReminder()
             } else {
-                print("❌ Timer is not running, not scheduling next reminder")
+                Logger.shared.log("❌ Timer is not running, not scheduling next reminder", level: .warning)
             }
         }
     }

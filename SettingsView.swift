@@ -137,14 +137,34 @@ struct SettingsView: View {
                     .fontWeight(.semibold)
                     .padding(.top, 20)
 
-                Picker("Minutes", selection: $reminderManager.intervalMinutes) {
-                    ForEach(1...60, id: \.self) { minute in
-                        Text("\(minute) min")
-                            .tag(minute)
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        ForEach(1...60, id: \.self) { minute in
+                            Button(action: {
+                                reminderManager.intervalMinutes = minute
+                            }) {
+                                HStack {
+                                    Text("\(minute) min")
+                                        .foregroundColor(.primary)
+                                    Spacer()
+                                    if reminderManager.intervalMinutes == minute {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(reminderManager.intervalMinutes == minute ? Color.blue.opacity(0.1) : Color.clear)
+                                .cornerRadius(8)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .pickerStyle(.menu)
-                .frame(height: 50)
+                .frame(height: 200)
+                .background(Color(.controlBackgroundColor))
+                .cornerRadius(8)
 
                 HStack(spacing: 16) {
                     Button("Cancel") {
@@ -156,6 +176,7 @@ struct SettingsView: View {
                         showingTimePicker = false
                     }
                     .buttonStyle(.borderedProminent)
+                    .foregroundColor(.white)
                 }
                 .padding(.bottom, 20)
             }
