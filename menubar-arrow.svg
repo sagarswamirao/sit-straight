@@ -6,10 +6,10 @@
       <stop offset="100%" style="stop-color:#00D4FF;stop-opacity:1" />
     </linearGradient>
   </defs>
-  
+
   <!-- Arrow shape for menu bar -->
-  <path d="M11 2 L18 8 L14 8 L14 18 L8 18 L8 8 L4 8 Z" 
-        fill="url(#menuGradient)" 
-        stroke="white" 
+  <path d="M11 2 L18 8 L14 8 L14 18 L8 18 L8 8 L4 8 Z"
+        fill="url(#menuGradient)"
+        stroke="white"
         stroke-width="0.5"/>
 </svg>

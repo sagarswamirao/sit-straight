@@ -72,7 +72,6 @@
 				A1000026 /* menubar-arrow.svg */,
 				A1000032 /* Preview Content */,
 			);
-			path = SitStraight;
 			sourceTree = "<group>";
 		};
 		A1000032 /* Preview Content */ = {
@@ -80,7 +79,6 @@
 			children = (
 				A1000016 /* Preview Assets.xcassets */,
 			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		A1000033 = {
@@ -314,7 +312,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SitStraight/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -339,7 +337,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SitStraight/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
