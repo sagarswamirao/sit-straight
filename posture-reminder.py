@@ -14,7 +14,7 @@ class PostureReminder:
         self.interval_minutes = interval_minutes
         self.running = False
         self.paused = False
-        
+
     def displayNotification(self, message, title=None, subtitle=None, soundname="Glass"):
         """
         Display a macOS notification:
@@ -63,7 +63,7 @@ class PostureReminder:
     def showPostureReminder(self):
         """Show the posture reminder notification and play sound"""
         current_time = datetime.now().strftime("%H:%M")
-        
+
         # Show notification
         self.displayNotification(
             message="🧘 Time to sit straight!\n\nTake a moment to adjust your posture and stretch.",
@@ -71,10 +71,10 @@ class PostureReminder:
             subtitle=f"Reminder at {current_time}",
             soundname="Glass"
         )
-        
+
         # Play additional sound
         self.playSound("Glass")
-        
+
         print(f"[{current_time}] Posture reminder sent")
 
     def start(self):
@@ -82,27 +82,27 @@ class PostureReminder:
         self.running = True
         print(f"🚀 Starting posture reminder daemon (interval: {self.interval_minutes} minutes)")
         print("Press Ctrl+C to stop")
-        
+
         # Show initial notification
         self.displayNotification(
             message=f"Posture reminders started!\n\nI'll remind you every {self.interval_minutes} minutes to sit straight.",
             title="Posture Reminder",
             subtitle="Daemon started"
         )
-        
+
         try:
             while self.running:
                 if not self.paused:
                     # Wait for the interval
                     print(f"⏰ Waiting {self.interval_minutes} minutes until next reminder...")
                     time.sleep(self.interval_minutes * 60)
-                    
+
                     if self.running and not self.paused:
                         self.showPostureReminder()
                 else:
                     # If paused, check every 10 seconds
                     time.sleep(10)
-                    
+
         except KeyboardInterrupt:
             print("\n🛑 Stopping posture reminder daemon...")
             self.stop()
@@ -134,22 +134,22 @@ def signal_handler(sig, frame):
 
 def main():
     parser = argparse.ArgumentParser(description="Posture Reminder Daemon")
-    parser.add_argument("--interval", type=int, default=20, 
+    parser.add_argument("--interval", type=int, default=20,
                        help="Reminder interval in minutes (default: 20)")
-    parser.add_argument("--test", action="store_true", 
+    parser.add_argument("--test", action="store_true",
                        help="Send a test notification and exit")
     args = parser.parse_args()
-    
+
     # Set up signal handler for graceful shutdown
     signal.signal(signal.SIGINT, signal_handler)
-    
+
     reminder = PostureReminder(interval_minutes=args.interval)
-    
+
     if args.test:
         print("🧪 Sending test notification...")
         reminder.showPostureReminder()
         return
-    
+
     # Start the daemon
     reminder.start()
 

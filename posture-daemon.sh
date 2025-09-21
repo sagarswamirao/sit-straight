@@ -35,16 +35,16 @@ start_daemon() {
         echo -e "${YELLOW}⚠️  Posture reminder daemon is already running${NC}"
         return 1
     fi
-    
+
     echo -e "${BLUE}🚀 Starting posture reminder daemon...${NC}"
-    
+
     # Start the Python script in background
     nohup python3 "$PYTHON_SCRIPT" --interval 20 > "$HOME/.posture-reminder.log" 2>&1 &
     local pid=$!
-    
+
     # Save PID
     echo "$pid" > "$PID_FILE"
-    
+
     # Wait a moment to check if it started successfully
     sleep 2
     if is_running; then
@@ -64,26 +64,26 @@ stop_daemon() {
         echo -e "${YELLOW}⚠️  Posture reminder daemon is not running${NC}"
         return 1
     fi
-    
+
     local pid=$(cat "$PID_FILE")
     echo -e "${BLUE}🛑 Stopping posture reminder daemon (PID: $pid)...${NC}"
-    
+
     # Send SIGTERM first
     kill "$pid" 2>/dev/null
-    
+
     # Wait for graceful shutdown
     local count=0
     while [ $count -lt 10 ] && ps -p "$pid" > /dev/null 2>&1; do
         sleep 1
         count=$((count + 1))
     done
-    
+
     # Force kill if still running
     if ps -p "$pid" > /dev/null 2>&1; then
         echo -e "${YELLOW}⚠️  Force killing daemon...${NC}"
         kill -9 "$pid" 2>/dev/null
     fi
-    
+
     rm -f "$PID_FILE"
     echo -e "${GREEN}✅ Posture reminder daemon stopped${NC}"
 }
