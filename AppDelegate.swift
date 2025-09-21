@@ -22,33 +22,52 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupMenuBar() {
+        print("🔧 Setting up menu bar...")
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
         if let button = statusItem?.button {
+            print("✅ Status bar button created")
             // Try to use custom arrow image, fallback to SF Symbol
             if let customImage = NSImage(named: "menubar-arrow") {
                 button.image = customImage
+                print("✅ Using custom arrow image")
             } else {
                 button.image = NSImage(systemSymbolName: "arrow.up.circle.fill", accessibilityDescription: "Sit Straight")
+                print("✅ Using SF Symbol arrow")
             }
             button.action = #selector(togglePopover)
+            print("✅ Button action set to togglePopover")
+        } else {
+            print("❌ Failed to create status bar button")
         }
 
         // Create popover
+        print("🔧 Creating popover...")
         popover = NSPopover()
         popover?.contentSize = NSSize(width: 300, height: 200)
         popover?.behavior = .transient
         if let reminderManager = reminderManager {
             popover?.contentViewController = NSHostingController(rootView: SettingsView(reminderManager: reminderManager))
+            print("✅ Popover content view controller set")
+        } else {
+            print("❌ ReminderManager is nil, popover will be empty")
         }
+        print("✅ Menu bar setup complete")
     }
 
     @objc private func togglePopover() {
-        guard let popover = popover, let button = statusItem?.button else { return }
+        print("🔍 togglePopover called")
+        guard let popover = popover, let button = statusItem?.button else {
+            print("❌ Missing popover or button")
+            return
+        }
 
+        print("✅ Popover and button found")
         if popover.isShown {
+            print("📤 Closing popover")
             popover.performClose(nil)
         } else {
+            print("📥 Showing popover")
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         }
     }
