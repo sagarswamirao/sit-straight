@@ -38,7 +38,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover = NSPopover()
         popover?.contentSize = NSSize(width: 300, height: 200)
         popover?.behavior = .transient
-        popover?.contentViewController = NSHostingController(rootView: SettingsView(reminderManager: reminderManager))
+        if let reminderManager = reminderManager {
+            popover?.contentViewController = NSHostingController(rootView: SettingsView(reminderManager: reminderManager))
+        }
     }
 
     @objc private func togglePopover() {
