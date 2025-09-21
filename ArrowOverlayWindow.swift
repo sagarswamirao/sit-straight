@@ -25,7 +25,7 @@ class ArrowOverlayWindow: NSWindow {
 
     private func setupWindow() {
         // Make it a full-screen overlay that appears on top of everything
-        level = .floating
+        level = .screenSaver  // Highest level for fullscreen support
         backgroundColor = .clear
         isOpaque = false
         hasShadow = false
@@ -47,7 +47,7 @@ class ArrowOverlayWindow: NSWindow {
 
     func showOverlay() {
         print("🎬 Showing overlay window...")
-        
+
         // Ensure we're on the main thread
         guard Thread.isMainThread else {
             DispatchQueue.main.async { [weak self] in
@@ -55,7 +55,7 @@ class ArrowOverlayWindow: NSWindow {
             }
             return
         }
-        
+
         // Show the window
         makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -72,15 +72,23 @@ class ArrowOverlayWindow: NSWindow {
     }
 
     func hideOverlay() {
+        // Ensure we're on the main thread
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.hideOverlay()
+            }
+            return
+        }
+        
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.3
             context.allowsImplicitAnimation = true
             self.animator().alphaValue = 0.0
-        } completionHandler: {
-            self.close()
+        } completionHandler: { [weak self] in
+            self?.close()
         }
     }
-    
+
     deinit {
         print("🗑️ ArrowOverlayWindow deallocated")
         close()

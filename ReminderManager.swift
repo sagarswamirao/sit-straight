@@ -27,6 +27,17 @@ class ReminderManager: ObservableObject {
         isRunning = false
         timer?.invalidate()
         timer = nil
+        
+        // Clean up overlay window
+        DispatchQueue.main.async { [weak self] in
+            self?.overlayWindow?.close()
+            self?.overlayWindow = nil
+        }
+    }
+    
+    deinit {
+        print("🗑️ ReminderManager deallocated")
+        stopTimer()
     }
 
     private func scheduleNextReminder() {
@@ -48,31 +59,28 @@ class ReminderManager: ObservableObject {
     private func showReminder() {
         print("🔔 Showing reminder...")
         
-        // Close any existing overlay first
-        overlayWindow?.close()
-        overlayWindow = nil
-        
-        // Play reminder sound
-        audioManager.playReminderSound()
-
-        // Create and show the overlay window
+        // Ensure all UI operations happen on main thread
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            do {
-                self.overlayWindow = ArrowOverlayWindow()
-                self.overlayWindow?.showOverlay()
-                print("✅ Overlay window shown")
+            // Close any existing overlay first
+            self.overlayWindow?.close()
+            self.overlayWindow = nil
+            
+            // Play reminder sound
+            self.audioManager.playReminderSound()
 
-                // Schedule next reminder if still running
-                if self.isRunning {
-                    print("⏰ Scheduling next reminder in \(self.intervalMinutes) minutes")
-                    self.scheduleNextReminder()
-                } else {
-                    print("❌ Timer is not running, not scheduling next reminder")
-                }
-            } catch {
-                print("❌ Error showing reminder: \(error)")
+            // Create and show the overlay window
+            self.overlayWindow = ArrowOverlayWindow()
+            self.overlayWindow?.showOverlay()
+            print("✅ Overlay window shown")
+
+            // Schedule next reminder if still running
+            if self.isRunning {
+                print("⏰ Scheduling next reminder in \(self.intervalMinutes) minutes")
+                self.scheduleNextReminder()
+            } else {
+                print("❌ Timer is not running, not scheduling next reminder")
             }
         }
     }
