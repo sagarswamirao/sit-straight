@@ -15,6 +15,10 @@
 		A1234567890ABCDEF1234571 /* ArrowOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234570 /* ArrowOverlayView.swift */; };
 		A1234567890ABCDEF1234573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234572 /* Assets.xcassets */; };
 		A1234567890ABCDEF1234576 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234575 /* Preview Assets.xcassets */; };
+		A1234567890ABCDEF1234578 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234577 /* AudioManager.swift */; };
+		A1234567890ABCDEF1234579 /* reminder-posture-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234578 /* reminder-posture-1.wav */; };
+		A1234567890ABCDEF123457A /* reminder-blink-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234579 /* reminder-blink-1.wav */; };
+		A1234567890ABCDEF123457B /* notification-break-reminder.wav in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123457A /* notification-break-reminder.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		A1234567890ABCDEF1234572 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1234567890ABCDEF1234575 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A1234567890ABCDEF1234577 /* SitStraight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SitStraight.entitlements; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234578 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234579 /* reminder-posture-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "reminder-posture-1.wav"; sourceTree = "<group>"; };
+		A1234567890ABCDEF123457A /* reminder-blink-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "reminder-blink-1.wav"; sourceTree = "<group>"; };
+		A1234567890ABCDEF123457B /* notification-break-reminder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "notification-break-reminder.wav"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,8 +58,12 @@
 				A1234567890ABCDEF123456C /* SettingsView.swift */,
 				A1234567890ABCDEF123456E /* ArrowOverlayWindow.swift */,
 				A1234567890ABCDEF1234570 /* ArrowOverlayView.swift */,
+				A1234567890ABCDEF1234578 /* AudioManager.swift */,
 				A1234567890ABCDEF1234572 /* Assets.xcassets */,
 				A1234567890ABCDEF1234577 /* SitStraight.entitlements */,
+				A1234567890ABCDEF1234579 /* reminder-posture-1.wav */,
+				A1234567890ABCDEF123457A /* reminder-blink-1.wav */,
+				A1234567890ABCDEF123457B /* notification-break-reminder.wav */,
 				A1234567890ABCDEF1234574 /* Preview Content */,
 			);
 			path = SitStraight;
@@ -141,6 +153,9 @@
 			files = (
 				A1234567890ABCDEF1234576 /* Preview Assets.xcassets in Resources */,
 				A1234567890ABCDEF1234573 /* Assets.xcassets in Resources */,
+				A1234567890ABCDEF1234579 /* reminder-posture-1.wav in Resources */,
+				A1234567890ABCDEF123457A /* reminder-blink-1.wav in Resources */,
+				A1234567890ABCDEF123457B /* notification-break-reminder.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +171,7 @@
 				A1234567890ABCDEF123456D /* SettingsView.swift in Sources */,
 				A1234567890ABCDEF123456F /* ArrowOverlayWindow.swift in Sources */,
 				A1234567890ABCDEF1234571 /* ArrowOverlayView.swift in Sources */,
+				A1234567890ABCDEF1234578 /* AudioManager.swift in Sources */,
 				A1234567890ABCDEF1234567 /* SitStraightApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
