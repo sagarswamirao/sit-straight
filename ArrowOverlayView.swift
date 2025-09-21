@@ -77,55 +77,65 @@ struct ArrowOverlayView: View {
 
     func startAnimation() {
         // Reset initial state
-        scale = 0.3
-        offsetY = 200
+        scale = 0.1
+        offsetY = 300
         opacity = 0.0
         backgroundOpacity = 0.0
-        rotationAngle = 0.0
-        pulseScale = 1.0
+        rotationAngle = -10.0
+        pulseScale = 0.8
 
         // Play blink sound at start
         audioManager.playBlinkSound()
 
-        // Animate background fade in
-        withAnimation(.easeOut(duration: 0.5)) {
+        // Animate background fade in with smooth transition
+        withAnimation(.easeOut(duration: 0.8)) {
             backgroundOpacity = 1.0
         }
 
-        // Animate arrow with delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            // Main rise animation
-            withAnimation(.easeOut(duration: 3.0)) {
-                scale = 1.2
-                offsetY = -100
-                opacity = 1.0
-                rotationAngle = 5.0
+        // Animate arrow with enhanced timing
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // Initial bounce-in effect
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7, blendDuration: 0.3)) {
+                scale = 0.8
+                offsetY = 50
+                opacity = 0.8
+                rotationAngle = 0.0
+            }
+            
+            // Main rise animation with smooth easing
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                withAnimation(.easeInOut(duration: 2.5)) {
+                    scale = 1.3
+                    offsetY = -150
+                    opacity = 1.0
+                    rotationAngle = 8.0
+                }
             }
 
-            // Pulsing effect during animation
-            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-                pulseScale = 1.3
+            // Enhanced pulsing effect
+            withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true)) {
+                pulseScale = 1.4
             }
 
             // Play break reminder sound mid-animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
                 audioManager.playBreakReminderSound()
             }
 
-            // Fade out in the last second
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                withAnimation(.easeIn(duration: 1.5)) {
-                    scale = 1.5
-                    offsetY = -200
+            // Smooth fade out with upward motion
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                withAnimation(.easeIn(duration: 2.0)) {
+                    scale = 1.8
+                    offsetY = -300
                     opacity = 0.0
-                    rotationAngle = 10.0
+                    rotationAngle = 15.0
                 }
             }
         }
 
-        // Fade out background at the end
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            withAnimation(.easeIn(duration: 1.0)) {
+        // Fade out background smoothly
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.5) {
+            withAnimation(.easeIn(duration: 1.5)) {
                 backgroundOpacity = 0.0
             }
         }

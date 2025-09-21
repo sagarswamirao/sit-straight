@@ -25,16 +25,21 @@ class ArrowOverlayWindow: NSWindow {
 
     private func setupWindow() {
         // Make it a full-screen overlay that appears on top of everything
-        level = .screenSaver  // Highest level for fullscreen support
+        level = .popUpMenu  // Higher than .screenSaver for better fullscreen support
         backgroundColor = .clear
         isOpaque = false
         hasShadow = false
         ignoresMouseEvents = false
-        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
+        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary, .transient]
         
         // Ensure it appears on all spaces and fullscreen apps
         if #available(macOS 10.11, *) {
             collectionBehavior.insert(.fullScreenAuxiliary)
+        }
+        
+        // Set to cover the entire screen
+        if let screen = NSScreen.main {
+            setFrame(screen.frame, display: true)
         }
 
         // Create the overlay view
@@ -47,7 +52,7 @@ class ArrowOverlayWindow: NSWindow {
 
     func showOverlay() {
         print("🎬 Showing overlay window...")
-
+        
         // Ensure we're on the main thread
         guard Thread.isMainThread else {
             DispatchQueue.main.async { [weak self] in
@@ -55,9 +60,16 @@ class ArrowOverlayWindow: NSWindow {
             }
             return
         }
-
-        // Show the window
-        makeKeyAndOrderFront(nil)
+        
+        // Check if window is still valid
+        guard !isReleased else {
+            print("❌ Window is released, cannot show overlay")
+            return
+        }
+        
+        // Show the window safely
+        orderFront(nil)
+        makeKey()
         NSApp.activate(ignoringOtherApps: true)
 
         // Start the animation
@@ -79,7 +91,7 @@ class ArrowOverlayWindow: NSWindow {
             }
             return
         }
-        
+
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.3
             context.allowsImplicitAnimation = true

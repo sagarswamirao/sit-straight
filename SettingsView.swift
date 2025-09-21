@@ -8,15 +8,28 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            // Header
+            // Header with gradient background
             VStack(spacing: 8) {
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 32))
-                    .foregroundColor(.blue)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .purple, .pink],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
 
                 Text("Sit Straight")
                     .font(.title2)
                     .fontWeight(.semibold)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .purple],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
             }
             .padding(.top, 16)
 
@@ -36,6 +49,7 @@ struct SettingsView: View {
 
             // Control Buttons
             VStack(spacing: 12) {
+                // Start/Stop Button
                 Button(action: {
                     if reminderManager.isRunning {
                         reminderManager.stopTimer()
@@ -52,10 +66,49 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .background(
+                    LinearGradient(
+                        colors: reminderManager.isRunning ? [.red, .orange] : [.green, .mint],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
                 .scaleEffect(isStartButtonHovered ? 1.05 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isStartButtonHovered)
                 .onHover { hovering in
                     isStartButtonHovered = hovering
+                }
+                
+                // Pause/Resume Button (only show when running)
+                if reminderManager.isRunning {
+                    Button(action: {
+                        if reminderManager.isPaused {
+                            reminderManager.resumeTimer()
+                        } else {
+                            reminderManager.pauseTimer()
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: reminderManager.isPaused ? "play.circle.fill" : "pause.circle.fill")
+                            Text(reminderManager.isPaused ? "Resume" : "Pause")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    .background(
+                        LinearGradient(
+                            colors: reminderManager.isPaused ? [.green, .mint] : [.orange, .yellow],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .scaleEffect(isStartButtonHovered ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 0.2), value: isStartButtonHovered)
+                    .onHover { hovering in
+                        isStartButtonHovered = hovering
+                    }
                 }
 
                 Button(action: {
@@ -70,6 +123,13 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.large)
+                .background(
+                    LinearGradient(
+                        colors: [.red, .pink],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
                 .scaleEffect(isQuitButtonHovered ? 1.05 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isQuitButtonHovered)
                 .onHover { hovering in

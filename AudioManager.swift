@@ -5,6 +5,9 @@ class AudioManager: ObservableObject {
     private var audioPlayer: AVAudioPlayer?
 
     func playReminderSound() {
+        // Stop any existing audio first
+        stopAudio()
+        
         guard let url = Bundle.main.url(forResource: "reminder-posture-1", withExtension: "wav") else {
             print("Could not find reminder-posture-1.wav")
             return
@@ -20,6 +23,9 @@ class AudioManager: ObservableObject {
     }
 
     func playBlinkSound() {
+        // Stop any existing audio first
+        stopAudio()
+        
         guard let url = Bundle.main.url(forResource: "reminder-blink-1", withExtension: "wav") else {
             print("Could not find reminder-blink-1.wav")
             return
@@ -35,6 +41,9 @@ class AudioManager: ObservableObject {
     }
 
     func playBreakReminderSound() {
+        // Stop any existing audio first
+        stopAudio()
+        
         guard let url = Bundle.main.url(forResource: "notification-break-reminder", withExtension: "wav") else {
             print("Could not find notification-break-reminder.wav")
             return

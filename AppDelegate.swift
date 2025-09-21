@@ -7,31 +7,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var popover: NSPopover?
     private var reminderManager: ReminderManager?
 
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        // Hide the app from the dock
-        NSApp.setActivationPolicy(.accessory)
+        func applicationDidFinishLaunching(_ notification: Notification) {
+            // Hide the app from the dock
+            NSApp.setActivationPolicy(.accessory)
 
-        // Initialize reminder manager first
-        reminderManager = ReminderManager()
+            // Initialize reminder manager first
+            reminderManager = ReminderManager()
 
-        // Setup menu bar
-        setupMenuBar()
+            // Setup menu bar
+            setupMenuBar()
 
-        // Register for auto-start
-        registerForAutoStart()
-    }
+            // Auto-start the timer
+            reminderManager?.startTimer()
+
+            // Register for auto-start
+            registerForAutoStart()
+        }
 
     private func setupMenuBar() {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem?.button {
-            // Try to use custom arrow image, fallback to SF Symbol
-            if let customImage = NSImage(named: "menubar-arrow") {
-                button.image = customImage
-            } else {
-                button.image = NSImage(systemSymbolName: "arrow.up.circle.fill", accessibilityDescription: "Sit Straight")
-            }
+            // Set up button with countdown timer
+            updateMenuBarButton()
             button.action = #selector(togglePopover)
+            
+            // Start timer to update menu bar every second
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                self?.updateMenuBarButton()
+            }
         }
 
         // Create popover
@@ -40,6 +44,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover?.behavior = .transient
         if let reminderManager = reminderManager {
             popover?.contentViewController = NSHostingController(rootView: SettingsView(reminderManager: reminderManager))
+        }
+    }
+
+    private func updateMenuBarButton() {
+        guard let button = statusItem?.button else { return }
+        
+        let timeRemaining = reminderManager?.timeRemaining ?? 0
+        let minutes = timeRemaining / 60
+        let seconds = timeRemaining % 60
+        
+        if let reminderManager = reminderManager, reminderManager.isRunning {
+            if reminderManager.isPaused {
+                button.title = "⏸️ \(minutes):\(String(format: "%02d", seconds))"
+            } else {
+                button.title = "⏰ \(minutes):\(String(format: "%02d", seconds))"
+            }
+        } else {
+            button.title = "🚀"
         }
     }
 
