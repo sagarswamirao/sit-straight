@@ -20,9 +20,9 @@ class ReminderManager: ObservableObject {
     private var startTime: Date?
 
     func startTimer() {
-        guard !isRunning else { 
+        guard !isRunning else {
             print("⚠️ Timer already running, ignoring start request")
-            return 
+            return
         }
         print("🚀 Starting timer with \(intervalMinutes) minute intervals")
         isRunning = true
@@ -86,9 +86,9 @@ class ReminderManager: ObservableObject {
     }
 
     private func scheduleNextReminder() {
-        guard isRunning && !isPaused else { 
+        guard isRunning && !isPaused else {
             print("❌ Not scheduling next reminder - isRunning: \(isRunning), isPaused: \(isPaused)")
-            return 
+            return
         }
 
         // Invalidate existing timer
@@ -97,16 +97,16 @@ class ReminderManager: ObservableObject {
             timer?.invalidate()
         }
         timer = nil
-        
+
         // Create new timer
         let interval = TimeInterval(intervalMinutes * 60)
         print("⏰ Creating new timer with interval: \(interval) seconds (\(intervalMinutes) minutes)")
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
             print("⏰ Timer fired - showing reminder")
             self?.showReminder()
         }
-        
+
         // Verify timer was created successfully
         if timer != nil {
             print("✅ Next reminder scheduled in \(intervalMinutes) minutes")
@@ -127,9 +127,9 @@ class ReminderManager: ObservableObject {
 
         // Ensure all UI operations happen on main thread
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { 
+            guard let self = self else {
                 print("❌ Self is nil in showReminder callback")
-                return 
+                return
             }
 
             print("🧹 Cleaning up existing overlay window")
@@ -143,11 +143,11 @@ class ReminderManager: ObservableObject {
 
             // Create and show the overlay window with delay to ensure cleanup
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                guard let self = self else { 
+                guard let self = self else {
                     print("❌ Self is nil in overlay creation callback")
-                    return 
+                    return
                 }
-                
+
                 print("🎬 Creating new overlay window")
                 self.overlayWindow = ArrowOverlayWindow()
                 self.overlayWindow?.showOverlay()

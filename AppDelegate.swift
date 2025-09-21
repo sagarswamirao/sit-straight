@@ -9,7 +9,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         func applicationDidFinishLaunching(_ notification: Notification) {
             print("🚀 AppDelegate: applicationDidFinishLaunching called")
-            
+
             // Hide the app from the dock
             NSApp.setActivationPolicy(.accessory)
 
@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             // Register for auto-start
             registerForAutoStart()
-            
+
             print("✅ AppDelegate: initialization complete")
         }
 
