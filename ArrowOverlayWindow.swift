@@ -24,13 +24,18 @@ class ArrowOverlayWindow: NSWindow {
     }
 
     private func setupWindow() {
-        // Make it a full-screen overlay
-        level = .screenSaver
+        // Make it a full-screen overlay that appears on top of everything
+        level = .floating
         backgroundColor = .clear
         isOpaque = false
         hasShadow = false
         ignoresMouseEvents = false
-        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
+        
+        // Ensure it appears on all spaces and fullscreen apps
+        if #available(macOS 10.11, *) {
+            collectionBehavior.insert(.fullScreenAuxiliary)
+        }
 
         // Create the overlay view
         overlayView = ArrowOverlayView()
@@ -42,6 +47,15 @@ class ArrowOverlayWindow: NSWindow {
 
     func showOverlay() {
         print("🎬 Showing overlay window...")
+        
+        // Ensure we're on the main thread
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.showOverlay()
+            }
+            return
+        }
+        
         // Show the window
         makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -51,9 +65,9 @@ class ArrowOverlayWindow: NSWindow {
         print("✅ Animation started")
 
         // Auto-hide after 5 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
             print("🔄 Auto-hiding overlay window")
-            self.hideOverlay()
+            self?.hideOverlay()
         }
     }
 
@@ -65,5 +79,10 @@ class ArrowOverlayWindow: NSWindow {
         } completionHandler: {
             self.close()
         }
+    }
+    
+    deinit {
+        print("🗑️ ArrowOverlayWindow deallocated")
+        close()
     }
 }
