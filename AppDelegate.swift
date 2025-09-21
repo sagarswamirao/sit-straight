@@ -57,9 +57,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func togglePopover() {
         print("🔍 togglePopover called")
-        guard let popover = popover, let button = statusItem?.button else {
+        
+        // Show a simple alert to test if the click is working
+        let alert = NSAlert()
+        alert.messageText = "Sit Straight"
+        alert.informativeText = "Button click detected! This means the menu bar button is working."
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+        
+        guard let popover = popover, let button = statusItem?.button else { 
             print("❌ Missing popover or button")
-            return
+            return 
         }
 
         print("✅ Popover and button found")
