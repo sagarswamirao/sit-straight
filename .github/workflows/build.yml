@@ -30,13 +30,13 @@ jobs:
         mkdir -p dist
         # Copy arm64 app as base
         cp -R DerivedData-arm64/Build/Products/Release/SitStraight.app dist/SitStraight.app
-        
+
         # Create universal binary for the main executable
         lipo -create \
           DerivedData-arm64/Build/Products/Release/SitStraight.app/Contents/MacOS/SitStraight \
           DerivedData-x86_64/Build/Products/Release/SitStraight.app/Contents/MacOS/SitStraight \
           -output dist/SitStraight.app/Contents/MacOS/SitStraight
-        
+
         # Verify the universal binary
         echo "Universal binary info:"
         lipo -info dist/SitStraight.app/Contents/MacOS/SitStraight

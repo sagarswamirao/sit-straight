@@ -39,7 +39,6 @@
 		A1000022 /* notification-break-reminder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "notification-break-reminder.wav"; sourceTree = "<group>"; };
 		A1000024 /* arrow-up.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "arrow-up.svg"; sourceTree = "<group>"; };
 		A1000026 /* menubar-arrow.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "menubar-arrow.svg"; sourceTree = "<group>"; };
-		A1000029 /* SitStraight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SitStraight.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +63,6 @@
 				A1000010 /* ArrowOverlayView.swift */,
 				A1000012 /* AudioManager.swift */,
 				A1000014 /* Assets.xcassets */,
-				A1000029 /* SitStraight.entitlements */,
 				A1000018 /* reminder-posture-1.wav */,
 				A1000020 /* reminder-blink-1.wav */,
 				A1000022 /* notification-break-reminder.wav */,
@@ -308,9 +306,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SitStraight.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CODE_SIGN_IDENTITY = "";
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_ALLOWED = NO;
 				VALID_ARCHS = "arm64 x86_64";
 				ONLY_ACTIVE_ARCH = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -336,9 +335,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SitStraight.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CODE_SIGN_IDENTITY = "";
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_ALLOWED = NO;
 				VALID_ARCHS = "arm64 x86_64";
 				ONLY_ACTIVE_ARCH = NO;
 				COMBINE_HIDPI_IMAGES = YES;
