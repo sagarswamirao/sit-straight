@@ -8,7 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var reminderManager: ReminderManager?
 
         func applicationDidFinishLaunching(_ notification: Notification) {
-            Logger.shared.log("🚀 AppDelegate: applicationDidFinishLaunching called", level: .info)
+            print("🚀 AppDelegate: applicationDidFinishLaunching called")
             
             // Hide the app from the dock
             NSApp.setActivationPolicy(.accessory)
@@ -25,8 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // Register for auto-start
             registerForAutoStart()
             
-            Logger.shared.log("✅ AppDelegate: initialization complete", level: .info)
-            Logger.shared.log("📁 Log file location: \(Logger.shared.getLogFilePath() ?? "Unknown")", level: .info)
+            print("✅ AppDelegate: initialization complete")
         }
 
     private func setupMenuBar() {
@@ -113,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        Logger.shared.log("🚨 AppDelegate: applicationWillTerminate called", level: .critical)
+        print("🚨 AppDelegate: applicationWillTerminate called")
         reminderManager?.stopTimer()
     }
 }
